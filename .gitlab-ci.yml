@@ -1,0 +1,8 @@
+image: rust:1.76
+
+stages:
+  - build
+  - lint
+  - deploy
+
+# TODO
