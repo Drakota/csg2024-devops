@@ -1,7 +1,8 @@
-use axum::{Router, routing::get,};
-use tokio::signal;
-use tower_http::trace::{self, TraceLayer};
-use tracing::Level;
+use axum::{routing::get, serve, Router};
+use controllers::{health, jungle};
+use tokio::net::TcpListener;
+use tower_http::services::fs::ServeDir;
+use tracing::{debug, Level};
 
 mod controllers;
 
@@ -11,12 +12,14 @@ async fn main() {
         .with_max_level(Level::DEBUG)
         .init();
 
-    let app = Router::new();
+    let app = Router::new()
+        .nest_service("/assets", ServeDir::new("assets")) // serve the file in the "assets" directory under `/assets`
+        .route("/health", get(health))
+        .route("/jungle", get(jungle));
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:5000").await.unwrap();
-    tracing::debug!("listening on {}", listener.local_addr().unwrap());
+    let listener = TcpListener::bind("0.0.0.0:5000").await.unwrap();
 
-    axum::serve(listener, app)
-        .await.unwrap();
+    debug!("listening on {}", listener.local_addr().unwrap());
+
+    serve(listener, app).await.unwrap();
 }
-

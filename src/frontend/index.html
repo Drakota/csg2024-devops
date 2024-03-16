@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table tbody tr {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    font-weight: bold;
+    color: #009879;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+</style>
+</head>
+<p><picture> <source 
+srcset="logo.svg" media="(width: 200px)" /><img src="logo.svg" alt="logo" width="100" 
+     height="100"/> </picture></p>
+<h1>Statut sur le service des prisonniers</h1>
+<button id="refresh-page">Refresh Page</button>
+    <table class="styled-table" id="main-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Bob</td>
+            <td>Correct</td>
+        </tr>
+        <tr class="active-row">
+            <td>Bob2</td>
+            <td>Correct</td>
+        </tr>
+        <!-- and so on... -->
+    </tbody>
+</table>
+<script>
+//Adds a click listener to the add-row button
+document.querySelector("#refresh-page").addEventListener("click", () => {
+//calls the addRow() method on clicking the button
+addRow();
+});
+
+//initializing the row counter
+let x = 2;
+
+const addRow = () => {
+//creates a new row element
+let row = document.createElement("tr");
+//creates a new column element
+let column1 = document.createElement("td");
+
+//var json_obj = JSON.parse(Get(/jungle));
+var arr = [ {"name":"Bob", "status": "Correct"}, {"name":"Bob2", "status": "Correct"}];
+
+for (var i = 0; i < arr.length; i++){
+  var obj = arr[i];
+  //create text for the column element
+	const column1text = document.createTextNode(obj.name);
+	const column2text = document.createTextNode(obj.status);
+
+	//appends the text to the column element
+	column1.appendChild(column1text);
+	let column2 = document.createElement("td");
+
+	column2.appendChild(column2text);
+
+	//appends the first column to the new row
+	row.appendChild(column1);
+
+	//appends the second column to the new row
+	row.appendChild(column2);
+
+	//appends the row to the table
+	document.querySelector("#main-table").appendChild(row);
+	};
+}
+
+function Get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;          
+}
+
+</script
+</html>

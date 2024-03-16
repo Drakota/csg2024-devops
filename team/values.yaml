@@ -5,9 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: TODO
+  repository: team0369e85012fe513feb.azurecr.io/team03
   pullPolicy: Always
-  tag: "TODO"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -27,10 +27,12 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -40,16 +42,16 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 5000
+  targetPort: 5000
 
-# TODO :
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: "nginx"
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/ingress.class: nginx
   hosts:
-    - host: "TODO"
+    - host: "team03.dev.cs2024.one"
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -58,7 +60,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -72,11 +75,11 @@ resources: {}
 
 livenessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
 readinessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
 
 autoscaling:

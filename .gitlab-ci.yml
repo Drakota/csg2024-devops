@@ -5,4 +5,22 @@ stages:
   - lint
   - deploy
 
-# TODO
+build-job:
+  stage: build
+  image: rust
+  script:
+    - cargo build --release
+  artifacts:
+    paths:
+      - target/release/rusters
+
+lint-job:
+  stage: lint
+  image: rust
+  script:
+    - cargo clippy
+
+azure:
+  stage: deploy
+  script:
+    - bash ./deploy-aks.sh
