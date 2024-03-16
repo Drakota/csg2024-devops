@@ -18,6 +18,7 @@ lint-job:
   stage: lint
   image: rust
   script:
+    - rustup component add clippy
     - cargo clippy
 
 azure:
