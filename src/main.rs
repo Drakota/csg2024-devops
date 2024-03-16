@@ -1,7 +1,7 @@
 use axum::{routing::get, serve, Router};
 use controllers::{health, jungle};
 use tokio::net::TcpListener;
-use tower_http::services::fs::ServeDir;
+use tower_http::services::fs::{ServeDir, ServeFile};
 use tracing::{debug, Level};
 
 mod controllers;
@@ -14,6 +14,7 @@ async fn main() {
 
     let app = Router::new()
         .nest_service("/assets", ServeDir::new("assets")) // serve the file in the "assets" directory under `/assets`
+        .nest_service("/index.html", ServeFile::new("src/frontend/index.html")) // serve the file "index.html" under `/index.html`
         .route("/health", get(health))
         .route("/jungle", get(jungle));
 
